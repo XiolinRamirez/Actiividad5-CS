@@ -1,0 +1,53 @@
+name: CI (Windows) - Tests & Reportes
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+
+jobs:
+  test-windows:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Instalar dependencias
+        run: npm ci
+        shell: pwsh
+
+      - name: Pruebas unitarias (jest)
+        run: |
+          mkdir -p reports\junit
+          npx jest --ci --coverage --reporters=default --reporters=jest-junit
+        env:
+          JEST_JUNIT_OUTPUT_DIR: reports/junit
+          JEST_JUNIT_OUTPUT_NAME: junit-unit.xml
+        shell: pwsh
+
+      # --- E2E opcional con Playwright (borra esta sección si no haces E2E) ---
+      - name: Instalar Playwright
+        run: npx playwright install
+        shell: pwsh
+
+      - name: Pruebas E2E (Playwright)
+        run: npx playwright test --reporter=junit,line
+        shell: pwsh
+      # --- Fin E2E opcional ---
+
+      - name: Subir reportes
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: junit-reports
+          path: |
+            reports\junit\**\*.xml
+            playwright-report\
+          if-no-files-found: ignore
