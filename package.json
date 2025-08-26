@@ -2,13 +2,13 @@
   "name": "demo-ci",
   "version": "1.0.0",
   "private": true,
-  "scripts": {
-    "test": "jest --ci --coverage",
-    "e2e": "playwright test"
-  },
+  "scripts": { "test": "jest --ci --coverage" },
   "devDependencies": {
     "jest": "^29.7.0",
-    "jest-junit": "^16.0.0",
-    "@playwright/test": "^1.47.0"
+    "jest-junit": "^16.0.0"
+  },
+  "jest": {
+    "testMatch": ["**/*.test.js"],
+    "testPathIgnorePatterns": ["/node_modules/", "/e2e/"]
   }
 }
