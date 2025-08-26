@@ -11,8 +11,8 @@
     "jest-junit": "^16.0.0",
     "@playwright/test": "^1.47.0"
   },
-  "jest": {
-    "testMatch": ["**/*.test.js"],
-    "testPathIgnorePatterns": ["/node_modules/", "/e2e/"]
+ "jest": {
+  "testMatch": ["**/*.test.js"],
+  "testPathIgnorePatterns": ["/node_modules/", "/e2e/"]
   }
 }
