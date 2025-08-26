@@ -33,11 +33,12 @@ jobs:
         shell: pwsh
 
       # --- E2E opcional con Playwright (borra esta sección si no haces E2E) ---
-      - name: Instalar Playwright
-        run: npx playwright install
-        shell: pwsh
-
-      - name: Pruebas E2E (Playwright)
+      - name: Instalar Playwright (navegadores)
+        if: ${{ hashFiles('e2e/**/*') != '' }}
+        run: npx playwright install --with-deps
+        shell: pws
+        - name: Pruebas E2E (Playwright)
+        if: ${{ hashFiles('e2e/**/*') != '' }}
         run: npx playwright test --reporter=junit,line
         shell: pwsh
       # --- Fin E2E opcional ---
